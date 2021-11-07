@@ -1,10 +1,12 @@
 #include<iostream>
-#include <string>
-#include <sstream>
-#include <bitset>
+#include<string>
+#include<sstream>
+#include<bitset>
+#include<vector>
+
 using namespace std;
-//    input text  input key   output text   16 keys arr   text's left  text's right  key's left   key's right
-string text,       key,        cipherTex,    keys[16],    LPT,           RPT,          CKey="",       Dkey="";
+//    input text  input key   output text   16 keys arr   text's left  text's right  key's left   key's right  vector of 8bit texts     vector results
+string text,       key,        cipherTex,    keys[16],    LPT,           RPT,          CKey="",       Dkey=""; vector<string> textVec,  resultsVec;
 
 // initial permutation table 
 int IP[64]={
@@ -283,7 +285,7 @@ void cipher(int index){
     LPT=duplicate;
   }
   
-  cout<<"\t\t\t"<<index+1<<"-cicle:\n";
+  cout<<"\t\t\t"<<index+1<<"-cycle:\n";
   cout<<"Right part: "<<RPT<<' '<<RPT.size()<<" bits\nLeft part: "<<LPT<<' '<<LPT.size()<<" bits\n";
   
   //cout<<temp<<" "<<temp.size();
@@ -315,31 +317,56 @@ string convertToText(string data){
    return output;
 }
 
+void textVector(string s){
+  //cout<<s<<s.size()<<endl;
+  int len=s.size(), residue=len%8, i=0;
+  for(;i+7<len;i+=8){
+    textVec.push_back(s.substr(i, 8));    
+  }
+  if(residue!=0) textVec.push_back(s.substr(i, residue));
+  
+  /*for(int i=0;i<textVec.size();i++){
+    cout<<textVec[i]<<"\n";
+  }*/
+  
+  
+}
+
 int main(){
   cout<<"##########################################################################\n";
   cout<<"                        DES algorithm, happy cipher ;)                    \n";
   cout<<"##########################################################################\n\n";
   cout<<"Input the text for cipher: \n";
   getline(cin, text);
+  textVector(text);
   cout<<"\nInput the key for cipher (8 characters):\n";
   cin>>key;
-  key=key.substr(0, 8);
-  cout<<"\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"<<endl;
-  permutation();
-  cout<<"\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"<<endl;
-  generateKeys();
-  createKeys();
-  cout<<"__________________________________________________________________________\n\n";
-  for(int i=0;i<16;i++){
-    cipher(i);
-  }
-  cout<<"\n__________________________________________________________________________\n\n";
+  for(int j=0;j<textVec.size();j++){
+    text=textVec[j];
+    cout<<"\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"<<endl;
+    cout<<"\n\t\t    "<<j+1<<" of 8bit data encryption:\n";
+    permutation();
+    cout<<"\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"<<endl;
+    generateKeys();
+    createKeys();
+    cout<<"__________________________________________________________________________\n\n";
+    for(int i=0;i<16;i++){
+      cipher(i);
+    }
+    cout<<"\n__________________________________________________________________________\n\n";
   
-  string ciphertext=finalPermutation();
-  cout<<"\t\t\tFinal permutation:\n"<<ciphertext<<" "<<ciphertext.size()<<" bits\n";
-  ciphertext=convertToText(ciphertext);
+    string ciphertext=finalPermutation();
+    cout<<"\t\t\tFinal permutation:\n"<<ciphertext<<" "<<ciphertext.size()<<" bits\n";
+    ciphertext=convertToText(ciphertext);
+    resultsVec.push_back(ciphertext);
+    cout<<"\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"<<endl;
+  }
   cout<<"\n__________________________________________________________________________\n\n\t\t\tResult:\n";
-  cout<<ciphertext<<endl;
+  for(int i=0;i<resultsVec.size();i++){
+    cout<<resultsVec[i];
+  }
+  cout<<endl;
+  
   
   return 0;
   
