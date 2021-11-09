@@ -1,4 +1,4 @@
-# DES-encryption-C-
+# DES-encryption-Cpp
 DES algorithm in C++ encryption&amp;decryption
 
 For description:
