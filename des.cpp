@@ -7,6 +7,8 @@
 using namespace std;
 //    input text  input key   output text   16 keys arr   text's left  text's right  key's left   key's right  vector of 8bit texts     vector results
 string text,       key,        cipherTex,    keys[16],    LPT,           RPT,          CKey="",       Dkey=""; vector<string> textVec,  resultsVec;
+/* todo ...
+char ASCII[255]={'А','Б','В','Г','Д','Е','Ё','Ж','З', 'И','Й','К','Л','М','Н','О','П','Р','С', 'Т','У','Ф','Х','Ц','Ч','Ш','Щ','Ъ','Ы', 'Ь','Э','Ю','Я',' ','!','"','#','$','%', '&',''','(',')','*','+',',','-','.','/', '0','1','2','3','4','5','6','7','8','9', ':',';','<','=','>','?','@','A','B','C', 'D','E','F','G','H','I','J','K','L','M', 'N','O','P','Q','R','S','T','U','V','W', 'X','Y','Z','[','\',']','^','_','`','a', 'b','c','d','e','f','g','h','i','j','k', 'l','m','n','o','p','q','r','s','t','u', 'v','w','x','y','z','{','|','}','~','а', 'б','в','г','д','е','ё','ж','з','и','й', 'к','л','м','н','о','п','р','с','т','у', 'ф','х','ц','ч','ш','щ','ъ','ы','ь','э', 'ю','я','€','ƒ','†','‡','‰','Š','Œ','Ž', '•','™','š','œ','œ','ž','Ÿ','¡','¢','£', '¤','¥','¦','§','¨','©','ª','«','¬','®', '¯','°','±','²','³','µ','¶','»','¼','½', '¾','¿','À','Á','Â','Ã','Ä','Å','Æ','Ç', 'È','É','Ê','Ë','Ì','Í','Î','Ï','Ð','Ñ', 'Ò','Ó','Ô','Õ','Ö','×','Ø','Ù','Ú','Û', 'Ü','Ý','Þ','ß','à','á','â','ã','ä','å', 'æ','ç','è',' ',' ',' ',' ',' ',' ',' ', ' ',' ', ' ', ' ', ' ', ' '};*/
 
 // initial permutation table 
 int IP[64]={
@@ -165,6 +167,12 @@ void permutation(){
   for (char& _char : text) {
     temp+=bitset<8>(_char).to_string();
   }
+  if(temp.size()!=64){
+  int tar=64-temp.size();
+    for(int i=0;i<tar;i++){
+      temp+='0';
+    }
+  }
   
   cout<<"__________________________________________________________________________\n\t\t\tText in binary:\n";
   cout<<temp<<" "<<temp.size()<<" bits"<<endl;
@@ -317,6 +325,7 @@ string convertToText(string data){
    return output;
 }
 
+// devide text with 8 chars
 void textVector(string s){
   //cout<<s<<s.size()<<endl;
   int len=s.size(), residue=len%8, i=0;
@@ -324,8 +333,9 @@ void textVector(string s){
     textVec.push_back(s.substr(i, 8));    
   }
   if(residue!=0) textVec.push_back(s.substr(i, residue));
-  
-  /*for(int i=0;i<textVec.size();i++){
+  /*s=s.substr(i, residue);
+  cout<<s<<endl;
+  for(int i=0;i<textVec.size();i++){
     cout<<textVec[i]<<"\n";
   }*/
   
@@ -341,6 +351,10 @@ int main(){
   textVector(text);
   cout<<"\nInput the key for cipher (8 characters):\n";
   cin>>key;
+  while(key.size()!=8){
+    cout<<"Key must be 8 characters! Input valid key:\n";
+    cin>>key;
+  }
   for(int j=0;j<textVec.size();j++){
     text=textVec[j];
     cout<<"\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"<<endl;
@@ -362,13 +376,15 @@ int main(){
     cout<<"\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"<<endl;
   }
   cout<<"\n__________________________________________________________________________\n\n\t\t\tResult:\n";
+  //cout<<"begin";
   for(int i=0;i<resultsVec.size();i++){
     cout<<resultsVec[i];
   }
-  cout<<endl;
+  //cout<<"end"<<endl;
   
   
   return 0;
-  
-
 }
+
+// Todo
+// 1. generate 255 char array

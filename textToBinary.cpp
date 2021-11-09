@@ -10,9 +10,9 @@ int main(){
   cout<<'\n'<<t;
   t=bitset<8>(k<<2).to_string();
   cout<<'\n'<<t<<endl; */
-  string s;
+  char s;
   cin>>s;
-  bitset<32> b(s);
+  bitset<8> b(s);
   int dec=b.to_ulong();
   cout<<dec;
   return 0;

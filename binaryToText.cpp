@@ -17,7 +17,7 @@ int main()
         output += c;
     }
 
-    std::cout << output;
+    std::cout << output<<std::endl;
 
    return 0;
 }
