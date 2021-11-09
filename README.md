@@ -3,7 +3,9 @@ DES algorithm in C++ encryption&amp;decryption
 
 For description:
 wiki: https://en.wikipedia.org/wiki/Data_Encryption_Standard
+
 tutorial: https://www.tutorialspoint.com/cryptography/data_encryption_standard.htm
+
 in russian: https://studme.org/239561/informatika/algoritm_shifrovaniya
 
 USAGE:
