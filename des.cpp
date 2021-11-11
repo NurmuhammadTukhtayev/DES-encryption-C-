@@ -7,8 +7,7 @@
 using namespace std;
 //    input text  input key   output text   16 keys arr   text's left  text's right  key's left   key's right  vector of 8bit texts     vector results
 string text,       key,        cipherTex,    keys[16],    LPT,           RPT,          CKey="",       Dkey=""; vector<string> textVec,  resultsVec;
-/* todo ...
-char ASCII[255]={'А','Б','В','Г','Д','Е','Ё','Ж','З', 'И','Й','К','Л','М','Н','О','П','Р','С', 'Т','У','Ф','Х','Ц','Ч','Ш','Щ','Ъ','Ы', 'Ь','Э','Ю','Я',' ','!','"','#','$','%', '&',''','(',')','*','+',',','-','.','/', '0','1','2','3','4','5','6','7','8','9', ':',';','<','=','>','?','@','A','B','C', 'D','E','F','G','H','I','J','K','L','M', 'N','O','P','Q','R','S','T','U','V','W', 'X','Y','Z','[','\',']','^','_','`','a', 'b','c','d','e','f','g','h','i','j','k', 'l','m','n','o','p','q','r','s','t','u', 'v','w','x','y','z','{','|','}','~','а', 'б','в','г','д','е','ё','ж','з','и','й', 'к','л','м','н','о','п','р','с','т','у', 'ф','х','ц','ч','ш','щ','ъ','ы','ь','э', 'ю','я','€','ƒ','†','‡','‰','Š','Œ','Ž', '•','™','š','œ','œ','ž','Ÿ','¡','¢','£', '¤','¥','¦','§','¨','©','ª','«','¬','®', '¯','°','±','²','³','µ','¶','»','¼','½', '¾','¿','À','Á','Â','Ã','Ä','Å','Æ','Ç', 'È','É','Ê','Ë','Ì','Í','Î','Ï','Ð','Ñ', 'Ò','Ó','Ô','Õ','Ö','×','Ø','Ù','Ú','Û', 'Ü','Ý','Þ','ß','à','á','â','ã','ä','å', 'æ','ç','è',' ',' ',' ',' ',' ',' ',' ', ' ',' ', ' ', ' ', ' ', ' '};*/
+
 
 // initial permutation table 
 int IP[64]={
@@ -139,7 +138,6 @@ void shift(int num){
   }
   CKey=first;
   Dkey=second;
-  //cout<<first<<"\n"<<second<<'\n';
 }
 
 // add 16 keys to array
@@ -195,8 +193,6 @@ string funEP(){
   for(int i=0;i<48;i++){
     result+=RPT[EP[i]-1];
   }
-  
-  //cout<<"\n\n\n"<<result<<' '<<result.size()<<endl;
   return result;
 }
 
@@ -243,25 +239,19 @@ void cipher(int index){
     string tmp=temp.substr(j, 6);
     B[i]=tmp;
   }
-  //cout<<index+1<<"-cicle "<<temp<<" "<<temp.size()<<" bits\n";
-  /*for(int i=0;i<8;i++){
-    cout<<B[i]<<" ";
-  } */
   
   
   // fill from Sblock table
   // convert to dec and find element from S blocks then sum all Stmp blocks, last permutation, XOR
   for(int i=0;i<8;i++){
     string tmp=B[i], str="";
-    //cout<<"tmp="<<tmp<<endl;
     str+=tmp[0];
     str+=tmp[5];
     tmp=tmp.substr(1, 4);
-    //cout<<"str="<<str<<" "<<tmp<<"\n";
+    
     bitset<32> first(str);
     bitset<32> second(tmp);
     int row=first.to_ulong(), column=second.to_ulong();
-    //cout<<"row:"<<row<<" column:"<<column<<endl;
     int stmp;
     if(i==0)
       stmp=S1[row][column];
@@ -279,8 +269,6 @@ void cipher(int index){
       stmp=S7[row][column];
     else if(i==7)
       stmp=S8[row][column];
-    //cout<<stmp<<" ";
-    //Stmp[i]=stmp;
     Stmp[i]=bitset<4>(stmp).to_string();  
   }
   temp="";
@@ -296,8 +284,6 @@ void cipher(int index){
   cout<<"\t\t\t"<<index+1<<"-cycle:\n";
   cout<<"Right part: "<<RPT<<' '<<RPT.size()<<" bits\nLeft part: "<<LPT<<' '<<LPT.size()<<" bits\n";
   
-  //cout<<temp<<" "<<temp.size();
-  
 }
 
 string finalPermutation(){
@@ -310,8 +296,6 @@ string finalPermutation(){
 }
 
 string convertToText(string data){
-    //std::string data;
-    //std::cin>>data;
     stringstream sstream(data);
     string output;
     while(sstream.good())
@@ -327,19 +311,11 @@ string convertToText(string data){
 
 // devide text with 8 chars
 void textVector(string s){
-  //cout<<s<<s.size()<<endl;
   int len=s.size(), residue=len%8, i=0;
   for(;i+7<len;i+=8){
     textVec.push_back(s.substr(i, 8));    
   }
-  if(residue!=0) textVec.push_back(s.substr(i, residue));
-  /*s=s.substr(i, residue);
-  cout<<s<<endl;
-  for(int i=0;i<textVec.size();i++){
-    cout<<textVec[i]<<"\n";
-  }*/
-  
-  
+  if(residue!=0) textVec.push_back(s.substr(i, residue));  
 }
 
 int main(){
@@ -376,15 +352,11 @@ int main(){
     cout<<"\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"<<endl;
   }
   cout<<"\n__________________________________________________________________________\n\n\t\t\tResult:\n";
-  //cout<<"begin";
   for(int i=0;i<resultsVec.size();i++){
     cout<<resultsVec[i];
   }
-  //cout<<"end"<<endl;
+  cout<<endl;
   
   
   return 0;
 }
-
-// Todo
-// 1. generate 255 char array
